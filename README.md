@@ -1,3 +1,6 @@
+[![PyPI](https://img.shields.io/pypi/v/randre.svg)](https://pypi.org/project/randre)
+[![Build Status](https://travis-ci.org/sorcio/randre.svg?branch=master)](https://travis-ci.org/sorcio/randre)
+
 # randre
 Generate random text from regular expression patterns
 

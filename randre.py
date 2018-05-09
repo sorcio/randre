@@ -1,7 +1,6 @@
 import random
 import sre_parse
 
-
 DEFAULT_MAX_REPEATS = 100
 
 
@@ -125,7 +124,6 @@ CATEGORIES = {
     sre_parse.CATEGORY_WORD: sre_parse.parse("[a-zA-Z0-9_]"),
     sre_parse.CATEGORY_NOT_WORD: sre_parse.parse("[^a-zA-Z0-9_]"),
 }
-
 
 if __name__ == '__main__':
     import sys

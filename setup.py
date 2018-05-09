@@ -10,7 +10,7 @@ setup(
     author='Davide Rizzo',
     author_email='sorcio@gmail.com',
     name='randre',
-    version='0.1.0.dev0',
+    version='0.1.0',
     description='Generate random text from regular expression patterns',
     long_description=readme,
     long_description_content_type='text/markdown',
