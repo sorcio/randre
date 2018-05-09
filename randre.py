@@ -30,26 +30,25 @@ class Generator:
     def gen_any(self, _):
         return chr(random.randint(32, 127))
 
-    def _check_negate(self, generation, options):
-        # XXX: are we missing any other op that can go in a IN?
-        for op, arg in options:
-            if op == sre_parse.LITERAL:
-                if generation == arg:
-                    return True
-            elif op == sre_parse.RANGE:
-                if arg[0] <= ord(generation) <= arg[1]:
-                    return True
-        return False
-
     def gen_in(self, options):
         if options[0][0] != sre_parse.NEGATE:
             op, args = random.choice(options)
             return self.gen_item(op, args)
         else:
-            generation = self.gen_any(None)
-            while self._check_negate(generation, options):
-                generation = self.gen_any(None)
-            return generation
+            candidates = set(range(32, 128))
+            for op, arg in options[1:]:
+                if op == sre_parse.LITERAL:
+                    try:
+                        candidates.remove(arg)
+                    except KeyError:
+                        pass
+                else:
+                    assert op == sre_parse.RANGE, 'unexpected op'
+                    candidates -= set(range(arg[0], arg[1] + 1))
+            if candidates:
+                return chr(random.choice(list(candidates)))
+            else:
+                raise RuntimeError('no valid candidates for pattern')
 
     def gen_repeat(self, args):
         min_repeats, max_repeats, subpattern = args
@@ -87,10 +86,8 @@ class Generator:
             return ''
 
     def gen_not_literal(self, lit):
-        generation = self.gen_any(None)
-        while generation == lit:
-            generation = self.gen_any(None)
-        return generation
+        candidates = [x for x in range(32, 128) if x != lit]
+        return chr(random.choice(candidates))
 
     def gen_assert(self, args):
         return ''
